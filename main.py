@@ -1,3 +1,24 @@
+import os
+from dotenv import load_dotenv
+
+print("\n=== SYSTEM ENV LOADING VERIFICATION ===")
+# 1. Boot the environment injector
+load_dotenv()
+
+# 2. Extract and print current diagnostics directly to the terminal console
+gemini_model = os.getenv("GEMINI_LLM_MODEL")
+gemini_key = os.getenv("GEMINI_API_KEY")
+
+print(f"[ENV DIAGNOSTIC] GEMINI_LLM_MODEL: '{gemini_model}'")
+print(f"[ENV DIAGNOSTIC] GEMINI_API_KEY Found: {True if gemini_key else False}")
+if gemini_key:
+    # Print the first 5 characters and last 4 characters to confirm it's valid without leaking it
+    print(f"[ENV DIAGNOSTIC] Key Mask: {gemini_key[:5]}...{gemini_key[-4:]}")
+else:
+    print("[ENV DIAGNOSTIC] ❌ ERROR: GEMINI_API_KEY is returning None or Empty String!")
+print("=======================================\n")
+
+
 from fastapi import FastAPI, Request, BackgroundTasks
 from src.graph.graph import change_guard_agent
 
