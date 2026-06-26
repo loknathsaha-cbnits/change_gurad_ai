@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-print("\n=== SYSTEM ENV LOADING VERIFICATION ===")
+# print("\n=== SYSTEM ENV LOADING VERIFICATION ===")
 # 1. Boot the environment injector
 load_dotenv()
 
@@ -9,14 +9,14 @@ load_dotenv()
 gemini_model = os.getenv("GEMINI_LLM_MODEL")
 gemini_key = os.getenv("GEMINI_API_KEY")
 
-print(f"[ENV DIAGNOSTIC] GEMINI_LLM_MODEL: '{gemini_model}'")
-print(f"[ENV DIAGNOSTIC] GEMINI_API_KEY Found: {True if gemini_key else False}")
-if gemini_key:
-    # Print the first 5 characters and last 4 characters to confirm it's valid without leaking it
-    print(f"[ENV DIAGNOSTIC] Key Mask: {gemini_key[:5]}...{gemini_key[-4:]}")
-else:
-    print("[ENV DIAGNOSTIC] ❌ ERROR: GEMINI_API_KEY is returning None or Empty String!")
-print("=======================================\n")
+# print(f"[ENV DIAGNOSTIC] GEMINI_LLM_MODEL: '{gemini_model}'")
+# print(f"[ENV DIAGNOSTIC] GEMINI_API_KEY Found: {True if gemini_key else False}")
+# if gemini_key:
+#     # Print the first 5 characters and last 4 characters to confirm it's valid without leaking it
+#     print(f"[ENV DIAGNOSTIC] Key Mask: {gemini_key[:5]}...{gemini_key[-4:]}")
+# else:
+#     print("[ENV DIAGNOSTIC] ❌ ERROR: GEMINI_API_KEY is returning None or Empty String!")
+# print("=======================================\n")
 
 
 from fastapi import FastAPI, Request, BackgroundTasks
@@ -41,14 +41,17 @@ async def github_webhook_endpoint(request: Request, background_tasks: Background
         if action in ["opened", "synchronize", "reopened"]:
             pr_data = payload["pull_request"]
             
-            # Extract necessary details matching your state keys
+            # Extract necessary details matching state keys
             initial_state = {
                 "pr_url": pr_data.get("html_url"),
                 "diff_url": pr_data.get("diff_url"), # GitHub provides direct raw diff links
                 "git_diff": "",
                 "risk_score": "",
                 "risk_factors": [],
-                "threat_report": ""
+                "threat_report": "",
+                "repo_full_name": payload["repository"]["full_name"],   
+                "pr_number": payload.get("number"),                      
+                "comment_url": ""
             }
             
             print(f"Triggering ChangeGuard AI for PR #{payload.get('number')}")

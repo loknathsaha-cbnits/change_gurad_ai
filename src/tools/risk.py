@@ -21,10 +21,10 @@ class LLMRiskAnalysis(BaseModel):
 LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-1.5-flash")
 API_KEY = os.getenv("GEMINI_API_KEY")
 
-print("\n=== CHANGEGUARD INITIALIZATION LOGS ===")
-print(f"[DEBUG INITIALIZATION] Target Model Configured: '{LLM_MODEL}'")
-print(f"[DEBUG INITIALIZATION] API Key Present: {True if API_KEY else False}")
-print("========================================\n")
+# print("\n=== CHANGEGUARD INITIALIZATION LOGS ===")
+# print(f"[DEBUG INITIALIZATION] Target Model Configured: '{LLM_MODEL}'")
+# print(f"[DEBUG INITIALIZATION] API Key Present: {True if API_KEY else False}")
+# print("========================================\n")
 
 # Use native class to execute structured payloads over Google's gateway
 llm = ChatGoogleGenerativeAI(

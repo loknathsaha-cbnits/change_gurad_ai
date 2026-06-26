@@ -6,7 +6,6 @@ from src.graph.state import ChangeGuardState
 def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
     print("\n" + "=" * 20 + " ENTERING THREAT REPORT NODE " + "=" * 20)
 
-    # 1. STATE RESOLUTION & SAFETY CHECK
     try:
         score = str(state.get("risk_score", "UNKNOWN")).upper().strip()
         findings = state.get("risk_factors", [])

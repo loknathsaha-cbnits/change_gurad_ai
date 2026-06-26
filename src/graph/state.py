@@ -13,6 +13,9 @@ class ChangeGuardState(TypedDict):
     risk_factors: List[str]
     threat_report: str
     error: Optional[str]
+    repo_full_name: str      
+    pr_number: int
+    comment_url: str
 
 class LLMRiskAnalysis(BaseModel):
     risk_score: str = Field(description="Must be exactly 'LOW', 'MEDIUM', or 'HIGH'")
