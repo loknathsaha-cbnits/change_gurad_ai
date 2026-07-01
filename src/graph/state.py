@@ -16,6 +16,8 @@ class ChangeGuardState(TypedDict):
     repo_full_name: str      
     pr_number: int
     comment_url: str
+    reviewer_assigned: bool
+    email_sent: bool
 
 class LLMRiskAnalysis(BaseModel):
     risk_score: str = Field(description="Must be exactly 'LOW', 'MEDIUM', or 'HIGH'")

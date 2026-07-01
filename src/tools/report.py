@@ -24,9 +24,9 @@ def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
 
     # 3. REPORT HEADER
     report_lines = [
-        "=" * 70,
+        "=" * 72,
         "CHANGEGUARD AI DEPLOYMENT THREAT REPORT",
-        "=" * 70,
+        "=" * 72,
         "",
         f"Risk Level     : {score}",
         f"Total Findings : {len(findings)}",
@@ -42,9 +42,9 @@ def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
 
         report_lines.extend(
             [
-                "=" * 70,
+                "=" * 72,
                 "NO SECURITY FINDINGS DETECTED",
-                "=" * 70,
+                "=" * 72,
                 "",
                 "The submitted changes do not contain any detected",
                 "security vulnerabilities, architectural risks,",
@@ -102,11 +102,11 @@ def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
 
                 report_lines.extend(
                     [
-                        "=" * 70,
+                        "=" * 72,
                         f"Finding #{idx}: {v_type}",
                         f"Severity : {score}",
                         f"File     : {f_name}",
-                        "=" * 70,
+                        "=" * 72,
                         "",
                         "Affected Code:",
                     ]
@@ -138,9 +138,9 @@ def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
 
                 report_lines.extend(
                     [
-                        "=" * 70,
+                        "=" * 72,
                         f"ERROR PROCESSING FINDING #{idx}",
-                        "=" * 70,
+                        "=" * 72,
                         f"Reason: {str(element_err)}",
                         "",
                     ]
@@ -149,9 +149,9 @@ def threat_report_node(state: ChangeGuardState) -> Dict[str, Any]:
     # 6. REPORT FOOTER
     report_lines.extend(
         [
-            "=" * 70,
+            "=" * 72,
             "End of Report",
-            "=" * 70,
+            "=" * 72,
         ]
     )
 
