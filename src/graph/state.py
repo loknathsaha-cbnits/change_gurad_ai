@@ -18,32 +18,10 @@ class ChangeGuardState(TypedDict):
     comment_url: str
     reviewer_assigned: bool
     email_sent: bool
+    commit_id: str          #  PR head SHA, required for line-comment API
+    line_comments_posted: bool   #  track whether the batched review succeeded
 
 class LLMRiskAnalysis(BaseModel):
     risk_score: str = Field(description="Must be exactly 'LOW', 'MEDIUM', or 'HIGH'")
     risk_factors: List[str] = Field(description="List of specific structural or security deployment risk factors found in the diff.")
 
-# class ChangeGuardState(TypedDict):
-#     event_type: str
-#     repository_name: str
-#     pr_number: int
-#     pr_url: str
-
-#     source_branch: str
-#     target_branch: str
-
-#     changed_files: List[str]
-#     git_diff: str
-
-#     risk_score: str
-#     risk_factors: List[str]
-
-#     impacted_services: List[str]
-
-#     security_findings: List[str]
-
-#     deployment_strategy: str
-#     rollback_plan: str
-
-#     threat_report: str
-#     error: Optional[str]

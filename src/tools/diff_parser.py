@@ -64,12 +64,6 @@ def validate_line_number(
     claimed_line_number: Optional[int],
     line_snippet: str
 ) -> Optional[int]:
-    """
-    Checks whether the LLM's claimed line_number actually corresponds to an
-    'added' line in the diff for that file. If not, attempts to recover the
-    correct line by matching line_snippet content. Returns a validated
-    line_number, or None if it can't be confidently resolved.
-    """
     if file_name not in file_map:
         print(f"[DIFF VALIDATION] File '{file_name}' not found in diff — cannot validate.")
         return None
@@ -77,26 +71,28 @@ def validate_line_number(
     entries = file_map[file_name]
     added_entries = [e for e in entries if e["type"] == "added"]
 
-    # 1. Trust but verify: does the claimed line_number exist as an added line?
     if claimed_line_number is not None:
         for entry in added_entries:
             if entry["line_number"] == claimed_line_number:
                 return claimed_line_number
         print(f"[DIFF VALIDATION] Claimed line {claimed_line_number} not an added line in '{file_name}' — attempting snippet match.")
 
-    # 2. Fallback: match on line_snippet content
     if not line_snippet:
         return None
 
-    # Use the first non-empty line of the snippet as the anchor for matching
     snippet_lines = [l.strip() for l in line_snippet.splitlines() if l.strip()]
     if not snippet_lines:
         return None
     anchor = snippet_lines[0]
 
+    # Guard: don't match on trivially short/blank anchors, and skip blank candidate lines
+    if len(anchor) < 3:
+        print(f"[DIFF VALIDATION] Anchor too short/blank ('{anchor}') — discarding.")
+        return None
+
     matches = [
         e for e in added_entries
-        if anchor in e["content"] or e["content"].strip() in anchor
+        if e["content"].strip() and (anchor in e["content"] or e["content"].strip() in anchor)
     ]
 
     if len(matches) == 1:

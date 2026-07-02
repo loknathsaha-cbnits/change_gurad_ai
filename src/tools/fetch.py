@@ -18,6 +18,7 @@ def pr_fetch_node(state: ChangeGuardState) -> Dict[str, Any]:
     if response.status_code == 200:
         diff_text = response.text
         print(f"[DEBUG] Success! Fetched Diff Content Length: {len(diff_text)} chars")
+        print(f"[DEBUG] RAW DIFF CONTENT:\n{diff_text[:2000]}")
     else:
         print(f"[DEBUG] Raw Error Content: {response.text[:200]}")
         diff_text = "Error fetching diff"

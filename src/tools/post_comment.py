@@ -1,6 +1,28 @@
 import os
 import requests
 
+def format_risk_factors(risk_factors) -> str:
+    print(f"[DEBUG FORMAT] Formatting {len(risk_factors) if risk_factors else 0} risk factor(s)...")
+
+    if not risk_factors:
+        print("[DEBUG FORMAT] No risk factors found — using fallback text.")
+        return "No specific risk factors identified."
+
+    blocks = []
+    for i, factor in enumerate(risk_factors, 1):
+        print(f"[DEBUG FORMAT] Formatting finding #{i}: type={factor.vulnerability_type}, file={factor.file_name}, line={factor.line_number}")
+        blocks.append(
+            f"**{i}. {factor.vulnerability_type}** — `{factor.file_name}`"
+            + (f" (line {factor.line_number})" if factor.line_number else "")
+            + f"\n> {factor.line_snippet}\n\n"
+            f"{factor.explanation}\n\n"
+            f"**Fix:** {factor.remediation}"
+        )
+
+    formatted = "\n\n---\n\n".join(blocks)
+    print(f"[DEBUG FORMAT] Final formatted length: {len(formatted)} chars")
+    return formatted
+
 def post_comment_node(state: dict) -> dict:
     print("\n=== POST_COMMENT_NODE DEBUG ===")
 
@@ -24,17 +46,20 @@ def post_comment_node(state: dict) -> dict:
         return state
 
     print(f"DEBUG risk_score       : {state.get('risk_score')}")
-    print(f"DEBUG risk_factors     : {state.get('risk_factors')}")
+    print(f"DEBUG risk_factors len : {len(state.get('risk_factors', []))}")
     print(f"DEBUG threat_report len: {len(state.get('threat_report', ''))}")
 
     risk_emoji = {"LOW": "🟢", "MEDIUM": "🟡", "HIGH": "🔴"}.get(state.get("risk_score"), "⚪")
-    factors_list = "\n".join(f"- {factor}" for factor in state.get("risk_factors", []))
+
+    # --- Format findings properly instead of dumping raw Pydantic objects ---
+    factors_list = format_risk_factors(state.get("risk_factors", []))
 
     comment_body = f"""## 🤖 ChangeGuard AI Risk Review
 
 **Risk Level:** {risk_emoji} {state.get('risk_score')}
 
 **Risk Factors:**
+
 {factors_list}
 
 **Summary:**

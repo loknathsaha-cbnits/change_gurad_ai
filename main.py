@@ -53,7 +53,9 @@ async def github_webhook_endpoint(request: Request, background_tasks: Background
                 "pr_number": payload.get("number"),                      
                 "comment_url": "",
                 "reviewer_assigned": False,
-                "email_sent": False
+                "email_sent": False,
+                "commit_id": pr_data.get("head", {}).get("sha", ""),
+                "line_comments_posted": False,
             }
             
             print(f"Triggering ChangeGuard AI for PR #{payload.get('number')}")
